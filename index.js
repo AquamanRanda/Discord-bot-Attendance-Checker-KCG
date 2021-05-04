@@ -71,7 +71,7 @@ client.on("message", async (message) => {
         finalMessage =
           finalMessage + `Semester ${i + 1}:  ` + attendance[i] + "\n";
       }
-      message.channel.send(finalMessage);
+      message.reply(finalMessage);
     }
   }
 });
