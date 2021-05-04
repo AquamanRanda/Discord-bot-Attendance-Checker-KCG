@@ -1,0 +1,22 @@
+{
+  "name": "discord-bot-attendance",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "discord.js": "^12.5.3",
+    "dotenv": "^8.2.0",
+    "nodemon": "^2.0.7",
+    "puppeteer": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/puppeteer": "^5.4.3"
+  }
+}
