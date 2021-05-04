@@ -7,9 +7,6 @@ client.once("ready", () => {
 });
 client.login(process.env.BOT_TOKEN);
 
-let url = "http://studentlogin.kcgcollege.ac.in/";
-let username = "";
-let password = "";
 const prefix = "$";
 const Login = async (url, username, password) => {
   try {
@@ -18,7 +15,7 @@ const Login = async (url, username, password) => {
     });
     const page = await browser.newPage();
     await page.goto("http://studentlogin.kcgcollege.ac.in/", {
-      waitUntil: "networkidle2",
+      waitUntil: "networkidle0",
     });
     await page.type('input[name="txtuname"]', username);
     await page.type('input[name="txtpassword"]', password);
@@ -45,26 +42,36 @@ const Login = async (url, username, password) => {
 };
 
 client.on("message", async (message) => {
+  let username = "";
+  let password = "";
   if (message.author.bot) return;
   if (message.content.startsWith(prefix)) {
     const [CMD_NAME, ...args] = message.content
       .trim()
       .substring(prefix.length)
       .split(/\s+/);
-
     if (CMD_NAME === "attendance") {
       username = args[0];
       password = args[1];
+      let arr = await Login(
+        "http://studentlogin.kcgcollege.ac.in/",
+        username,
+        password
+      );
+      let attendance = [];
+      for (let i = 8; i < arr.length; i += 10) {
+        if (arr[i] == "NaN") {
+          arr[i] = 0;
+        }
+        attendance.push(arr[i]);
+      }
+      attendance.splice(1, 0, " ");
+      let finalMessage = "";
+      for (let i = 0; i < attendance.length; i++) {
+        finalMessage =
+          finalMessage + `Semester ${i + 1}:  ` + attendance[i] + "\n";
+      }
+      message.channel.send(finalMessage);
     }
   }
-  let arr = await Login(url, username, password);
-  let attendance = [];
-  for (let i = 8; i < arr.length; i += 10) {
-    if (arr[i] == "NaN") {
-      arr[i] = 0;
-    }
-    attendance.push(arr[i]);
-  }
-  attendance.splice(1, 0, " ");
-  message.channel.send(`Semester 6 : ` + attendance[5]);
 });
