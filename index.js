@@ -54,25 +54,30 @@ client.on("message", async (message) => {
     if (CMD_NAME === "attendance") {
       username = args[0];
       password = args[1];
-      let arr = await Login(
-        "http://studentlogin.kcgcollege.ac.in/",
-        username,
-        password
-      );
-      let attendance = [];
-      for (let i = 8; i < arr.length; i += 10) {
-        if (arr[i] == "NaN") {
-          arr[i] = 0;
+      try {
+        let arr = await Login(
+          "http://studentlogin.kcgcollege.ac.in/",
+          username,
+          password
+        );
+        let attendance = [];
+        for (let i = 8; i < arr.length; i += 10) {
+          if (arr[i] == "NaN") {
+            arr[i] = 0;
+          }
+          attendance.push(arr[i]);
         }
-        attendance.push(arr[i]);
+        attendance.splice(1, 0, " ");
+        let finalMessage = "";
+        for (let i = 0; i < attendance.length; i++) {
+          finalMessage =
+            finalMessage + `Semester ${i + 1}:  ` + attendance[i] + "\n";
+        }
+        message.reply(finalMessage);
+      } catch (error) {
+        console.log(error);
+        message.reply("Please Enter the login Credentials Properly");
       }
-      attendance.splice(1, 0, " ");
-      let finalMessage = "";
-      for (let i = 0; i < attendance.length; i++) {
-        finalMessage =
-          finalMessage + `Semester ${i + 1}:  ` + attendance[i] + "\n";
-      }
-      message.reply(finalMessage);
     }
   }
 });
