@@ -34,8 +34,10 @@ const Login = async (url, username, password) => {
         return Array.from(columns, (column) => column.innerText);
       });
     });
+    await browser.close();
     // prettier-ignore
     arr = result[13].filter(col => col != ' ');
+
     return arr;
   } catch (error) {
     console.log(error);
