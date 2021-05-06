@@ -56,6 +56,7 @@ client.on("message", async (message) => {
     if (CMD_NAME === "attendance") {
       username = args[0];
       password = args[1];
+      console.log(typeof password);
       try {
         let arr = await Login(
           "http://studentlogin.kcgcollege.ac.in/",
