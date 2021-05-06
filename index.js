@@ -34,11 +34,15 @@ const Login = async (url, username, password) => {
         return Array.from(columns, (column) => column.innerText);
       });
     });
+    const name = await page.evaluate(() => {
+      let name = document.querySelector("#lblsname").innerText;
+      return name;
+    });
     await browser.close();
     // prettier-ignore
     arr = result[13].filter(col => col != ' ');
-
-    return arr;
+    let final = [arr, name];
+    return final;
   } catch (error) {
     console.log(error);
   }
@@ -56,13 +60,14 @@ client.on("message", async (message) => {
     if (CMD_NAME === "attendance") {
       username = args[0];
       password = args[1];
-      console.log(typeof password);
       try {
-        let arr = await Login(
+        let response = await Login(
           "http://studentlogin.kcgcollege.ac.in/",
           username,
           password
         );
+        let name = response[1];
+        let arr = response[0];
         let attendance = [];
         for (let i = 8; i < arr.length; i += 10) {
           if (arr[i] == "NaN") {
@@ -76,7 +81,7 @@ client.on("message", async (message) => {
           finalMessage =
             finalMessage + `Semester ${i + 1}:  ` + attendance[i] + "\n";
         }
-        message.reply(finalMessage);
+        message.channel.send("\n" + name + "\n" + finalMessage);
       } catch (error) {
         console.log(error);
         message.reply("Please Enter the login Credentials Properly");
