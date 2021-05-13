@@ -84,7 +84,11 @@ client.on("message", async (message) => {
         message.channel.send("\n" + name + "\n" + finalMessage);
       } catch (error) {
         console.log(error);
-        message.reply("Please Enter the login Credentials Properly");
+        message
+          .reply("Please Enter the login Credentials Properly")
+          .then((msg) => {
+            msg.delete({ timeout: 4000 });
+          });
       }
     }
   }
