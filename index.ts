@@ -1,5 +1,6 @@
-const puppeteer = require("puppeteer");
-const Discord = require("discord.js");
+import Discord from "discord.js";
+import puppeteer from "puppeteer";
+// tslint:disable-next-line: no-var-requires
 require("dotenv").config();
 const client = new Discord.Client();
 client.once("ready", () => {
@@ -35,16 +36,14 @@ const Login = async (url: string, username: string, password: string) => {
       });
     });
     const name = await page.evaluate(() => {
-      //@ts-ignore
-      let name = document.querySelector("#lblsname").innerText;
+      // @ts-ignore
+      const name = document.querySelector("#lblsname").innerText;
       return name;
     });
     await browser.close();
     // prettier-ignore
-    console.log(result)
-    let arr = result[14].filter((col: string) => col != " ");
-    let final = [arr, name];
-    console.log(final);
+    const arr = result[14].filter((col: string) => col !== " ");
+    const final = [arr, name];
     return final;
   } catch (error) {
     console.log(error);
@@ -64,14 +63,14 @@ client.on("message", async (message: any) => {
       username = args[0];
       password = args[1];
       try {
-        let response: any = await Login(
+        const response: any = await Login(
           "http://studentlogin.kcgcollege.ac.in/",
           username,
           password
         );
-        let name = response[1];
-        let arr = response[0];
-        let attendance = [];
+        const name = response[1];
+        const arr = response[0];
+        const attendance = [];
         for (let i = 8; i < arr.length; i += 10) {
           if (arr[i] == "NaN") {
             arr[i] = 0;
